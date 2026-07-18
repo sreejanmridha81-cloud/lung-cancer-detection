@@ -2,8 +2,8 @@ import streamlit as st
 import pickle
 import numpy as np
 from PIL import Image
-from tensorflow.keras.models import load_model
-model = load_model("model12.h5")
+
+model = pickle.load(open("model12"."rb")
 class_indices=pickle.load(open("class_indices12",'rb'))
 def load_and_preprocess_image(img_path,target_size=(224,224)):
  img=Image.open(img_path).convert("RGB")
