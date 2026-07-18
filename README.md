@@ -1,0 +1,89 @@
+# Chest CT-Scan Lung Cancer Classification Web App 🫁
+
+This repository contains an end-to-end Deep Learning project for classifying chest CT-scan images into four distinct categories: Adenocarcinoma, Large Cell Carcinoma, Squamous Cell Carcinoma, and Normal. 
+
+The project includes an entire lifecycle pipeline: from dataset acquisition and model training in a Jupyter/Colab notebook using a Convolutional Neural Network (CNN) in TensorFlow/Keras, to a production-ready web interface built with Streamlit.
+
+---
+
+## 📌 Project Overview
+Lung cancer remains one of the leading causes of cancer-related mortality globally. Early detection through CT (Computed Tomography) imaging significantly increases treatment success rates. This project provides a prototype tool that leverages deep learning to automatically detect and classify specific types of lung malignancies, or verify a normal/healthy scan, via an accessible web application.
+
+---
+
+## 📂 File Architecture
+* **`Lung_Cancer_Classification.ipynb`**: The training notebook used to pull the dataset via the Kaggle API, perform image preprocessing, compile and train the CNN model, and export the trained state.
+* **`app.py`**: The Streamlit web server application script that powers the front-end file-uploader, manages the prediction state, and interfaces with the deep learning backend.
+* **`model12`**: The serialized (pickled) trained TensorFlow/Keras CNN architecture and weight weights.
+* **`class_indices12`**: A pickled Python dictionary mapping predicted numerical array outputs back to the human-readable cancer category text.
+
+---
+
+## 📊 Dataset Specifications
+The model is trained on the **Chest CT-Scan Images Dataset** hosted on Kaggle. It contains lung CT slices divided into 4 specific clinical categories:
+1. **`Adenocarcinoma`**: A type of non-small cell lung cancer (NSCLC) that develops in mucus-secreting glands.
+2. **`Large Cell Carcinoma`**: A fast-growing group of non-small cell lung cancers that can appear in any part of the lung.
+3. **`Squamous Cell Carcinoma`**: Another NSCLC variant linked strongly to smoking histories, usually found centrally in the bronchi.
+4. **`Normal`**: Healthy lung scans without any signs of abnormal nodules, growths, or tissue masses.
+
+---
+
+## 🛠️ Model Pipeline & Architecture
+
+1. **Preprocessing & Augmentation**:
+   * Images are loaded, parsed as 3-channel RGB matrix tensors, and resized uniformly to $224 \times 224$ pixels.
+   * Input pixels are scaled down to a fractional range of `[0.0, 1.0]` by dividing by `255.0` within an `ImageDataGenerator`.
+2. **CNN Architecture**: 
+   * **Convolutional Layers**: 3 structured 2D convolutional layers (`Conv2D` with ReLU activation) scaling feature map channels from 32, to 64, and up to 128.
+   * **Pooling Layers**: 2D Max Pooling layers (`MaxPooling2D`) are strategically positioned to downsample feature spatial grids and build translation-invariant properties.
+   * **Dense Head**: The network ends with a `Flatten` layer, an intermediate dense hidden block of 128 units, a `Dropout(0.5)` function to actively eliminate over-reliance on individual nodes, and a terminal output dense layer utilizing a `Softmax` activation function across 4 categorical distribution outputs.
+
+---
+
+## 🚀 Local Installation and Deployment
+
+Follow these steps to deploy and test the app environment on your local server machine:
+
+### 1. Clone the Project
+```bash
+git clone https://github.com
+cd chest-ct-cancer-detection
+```
+
+### 2. Set Up a Virtual Environment & Install Requirements
+Ensure Python 3.8+ is installed, then build an isolated operational environment:
+```bash
+# Create the environment
+python -m venv venv
+
+# Activate environment (Windows PowerShell / Command Prompt)
+venv\Scripts\activate
+
+# Activate environment (macOS/Linux Terminal)
+source venv/bin/activate
+
+# Install required dependencies
+pip install streamlit tensorflow pillow numpy
+```
+
+### 3. Verify Model Assets
+Make sure that your serialized artifacts `model12` and `class_indices12` exist directly in the root of your project directory alongside `app.py`.
+
+### 4. Boot Up the Streamlit Server
+Run the local Streamlit environment tracker from your terminal instance:
+```bash
+streamlit run app.py
+```
+*Your operating system's default browser will automatically render a window pointing to `http://localhost:8501` containing the user application layout.*
+
+---
+
+## 💡 Web Application Usage
+1. Once the dashboard fires up, find the file uploader section.
+2. Drag and drop or browse to upload an experimental lung chest CT scan image file (`.png`, `.jpg`, or `.jpeg`).
+3. The model script will execute a background forward-pass prediction on the tensor array and output the classified lung tissue state inside a clear user interface block.
+
+---
+
+## 🛡️ Medical Disclaimer
+*This tool is created as an academic deep learning exercise and a technological proof of concept. The results generated by the model should **not** be used as official medical diagnosis or expert guidance. Any interpretation of medical imagery should be supervised and evaluated by an authorized medical radiologist, oncologist, or physician.*
